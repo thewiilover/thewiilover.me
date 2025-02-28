@@ -22,7 +22,8 @@ import IconList from "../components/IconList.astro";
 import Buttons from "../components/buttons/Buttons.astro";
 import BtnFx from "../components/buttons/BtnFx.astro";
 import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
-
+import pfp from "../images/pfp.webp";
+import { Picture } from "astro:assets";
 ---
 
 <Page
@@ -59,45 +60,35 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
         ]}
     >
         <Fragment slot="pfp">
-            <!--
-                <Picture src={pfp} formats={['avif', 'webp']} alt="Mahiro Oyama" loading="eager" />
-            -->
-            <picture>
-                <source
-                    srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-                    type="image/webp"
-                />
-                <img
-                    id="pfp"
-                    src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-                    width="256"
-                    height="256"
-                    alt="thewiilover's pfp"
-                />
-                <OrnamentLayer />
-                <script is:inline>
-                    fetch("https://avatars.split.pet/user/split/json")
-                        .then((d) => d.json())
-                        .then(
-                            ({ altText }) =>
-                                (document.getElementById("pfp").alt = altText),
-                        );
-                </script>
-            </picture>
-       </Fragment>
-
-        <Fragment slot="title">
-            hi, i'm Wii <span
-                style="color:var(--c-subtext2); font-weight: normal; font-size: large;"
-                >(thewiilover)</span
-            >
+            <Picture
+                src={pfp}
+                formats={["avif", "webp"]}
+                alt="Mahiro Oyama"
+                loading="eager"
+            />
+            <img
+                id="pfp"
+                src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
+                width="256"
+                height="256"
+                alt="thewiilover's pfp"
+            />
+            <OrnamentLayer />
         </Fragment>
-
-        <Fragment slot="description"> he; absolutely terrible developer </Fragment>
     </PersonHeader>
 
-    <section class="significant">
-        <!-- <h2 class="sectionDenoter" id="stuffiknow">stuff i use</h2>
+    <Fragment slot="title">
+        hi, i'm Wii <span
+            style="color:var(--c-subtext2); font-weight: normal; font-size: large;"
+            >(thewiilover)</span
+        >
+    </Fragment>
+
+    <Fragment slot="description"> he; absolutely terrible developer </Fragment>
+</Page>
+
+<section class="significant">
+    <!-- <h2 class="sectionDenoter" id="stuffiknow">stuff i use</h2>
         <IconList
             list={[
                 {
@@ -117,75 +108,70 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
                 },
             ]}
         /> -->
-        <div style="height:10px;"></div>
-        <h2 class="sectionDenoter" id="stuffidontknow">
-            Stuff I want to learn<br /><small
-                style="color: var(--c-subtext2); font-weight: 500; text-transform: none;"
-                >(or am learning)</small
-            >
-        </h2>
-        <IconList
-            list={[
-                {
-                    url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-                    icon: siJavascript.svg,
-                    color: "#" + siJavascript.hex,
-                },
-                {
-                    url: "https://typescriptlang.org",
-                    icon: siTypescript.svg,
-                    color: "#" + siTypescript.hex,
-                },
-                {
-                    url: "https://nodejs.org",
-                    icon: siNodedotjs.svg,
-                    color: "#" + siNodedotjs.hex,
-                },
-                { 
-                    url: "https://bun.sh", 
-                    icon: siBun.svg 
-                },
-                {
-                    url: "https://svelte.dev",
-                    icon: siSvelte.svg,
-                    color: "#" + siSvelte.hex,
-                },
-            ]}
-        />
-        <div style="height:10px;"></div>
-        <h2 class="sectionDenoter" id="not-notable-stuff">
-            Not-so-notable stuff
-        </h2>
-        <p>
-            <a href="https://thewiilover.click">random website i made</a>,
-            <a href="https://personal.thewiilover.my/new.html">the og about me</a>
-           <!-- <small>
+    <div style="height:10px;"></div>
+    <h2 class="sectionDenoter" id="stuffidontknow">
+        Stuff I want to learn<br /><small
+            style="color: var(--c-subtext2); font-weight: 500; text-transform: none;"
+            >(or am learning)</small
+        >
+    </h2>
+    <IconList
+        list={[
+            {
+                url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+                icon: siJavascript.svg,
+                color: "#" + siJavascript.hex,
+            },
+            {
+                url: "https://typescriptlang.org",
+                icon: siTypescript.svg,
+                color: "#" + siTypescript.hex,
+            },
+            {
+                url: "https://nodejs.org",
+                icon: siNodedotjs.svg,
+                color: "#" + siNodedotjs.hex,
+            },
+            {
+                url: "https://bun.sh",
+                icon: siBun.svg,
+            },
+            {
+                url: "https://svelte.dev",
+                icon: siSvelte.svg,
+                color: "#" + siSvelte.hex,
+            },
+        ]}
+    />
+    <div style="height:10px;"></div>
+    <h2 class="sectionDenoter" id="not-notable-stuff">Not-so-notable stuff</h2>
+    <p>
+        <a href="https://thewiilover.click">random website i made</a>,
+        <a href="https://personal.thewiilover.my/new.html">the og about me</a>
+        <!-- <small>
                 <a href="https://avatars.split.pet/user/split/source"
                     >My profile picture is sourced from here.</a
                 ><br />
                 video0.mov if the discord link doesn't work for you<br />
             </small> -->
-        </p>
-    </section>
-    <!--
+    </p>
+</section>
+<!--
     <section class="insignificant">
         <h2 class="sectionDenoter">More about me</h2>
         <Posts display={["postList", ["introduction"]]} />
         <br>
     </section>
 -->
-    <section id="posts" class="insignificant">
-        <h2 class="sectionDenoter">Posts</h2>
-        <Posts display={["postCount", 3]} />
-        <p style="text-align: right;"><a href="/blog">See all posts</a></p>
-    </section>
+<section id="posts" class="insignificant">
+    <h2 class="sectionDenoter">Posts</h2>
+    <Posts display={["postCount", 3]} />
+    <p style="text-align: right;"><a href="/blog">See all posts</a></p>
+</section>
 
-    <section id="buttons" class="insignificant">
-        <h2 class="sectionDenoter">Buttons</h2>
-        <Buttons />
-        <BtnFx />
-        <br />
-    </section>
-
-
-</Page>
+<section id="buttons" class="insignificant">
+    <h2 class="sectionDenoter">Buttons</h2>
+    <Buttons />
+    <BtnFx />
+    <br />
+</section>
