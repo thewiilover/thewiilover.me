@@ -57,7 +57,12 @@
         return element
     }
 
-    function actimg(url?: string, appid?: string) {
+    function actimg(url?: string, appid?: string, activity_name?: string) {
+        // Special case for Spotify
+        if (activity_name === "Spotify") {
+            return "../../src/images/musicnote.svg"; // Path to your Spotify icon
+        }
+        
         return (
             url &&
             (url.startsWith("mp:")
@@ -105,7 +110,8 @@
                                 actimg(
                                     e.assets?.small_image ||
                                         e.assets?.large_image,
-                                    e.application_id
+                                    e.application_id,
+                                    e.name  // Pass activity name to actimg
                                 ) || dfImageUrl,
                             alt: e.name,
                             class: `activity ornament${a.length > 1 ? " sm" : ""}`,
