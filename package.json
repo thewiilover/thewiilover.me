@@ -29,6 +29,6 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "discord-api-types": "^0.37.98"
+    "discord-api-types": "^0.37.119"
   }
 }
