@@ -1,3 +1,7 @@
+<!-- honestly probably some of the worst code i've ever written
+     i'm so sorry to anyone who reads this
+     i swear this is not my usual code quality
+     (...i think...)-->
 <script>
     import type Discord from "discord-api-types/v10"
     interface LanyardPart {
@@ -55,8 +59,8 @@
 
     function actimg(url?: string, appid?: string, activity_name?: string) {
         // Special case for Spotify
-        if (activity_name === "Spotify" && url) {
-            return `https://media.discordapp.net/${url.replace("mp:", "")}`;
+        if (activity_name === "Spotify") {
+            return "../../src/images/musicnote.svg"; // Path to your Spotify icon
         }
         
         return (
