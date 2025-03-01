@@ -62,55 +62,28 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
             <!--
                 <Picture src={pfp} formats={['avif', 'webp']} alt="Mahiro Oyama" loading="eager" />
             -->
-<picture>
-    <source
-        srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-        type="image/webp"
-    />
-    <img
-        id="pfp"
-        src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-        width="256"
-        height="256"
-        alt="thewiilover's pfp"
-    />
-    <OrnamentLayer />
-    <script is:inline>
-        // Connect to Lanyard WebSocket
-        const socket = new WebSocket("wss://api.lanyard.rest/socket");
-
-        socket.addEventListener("open", () => {
-            // Subscribe to presence updates for the user
-            socket.send(JSON.stringify({
-                op: 2,
-                d: {
-                    subscribe_to_id: "768583702283288597"
-                }
-            }));
-        });
-
-        socket.addEventListener("message", (event) => {
-            const data = JSON.parse(event.data);
-            if (data.t === "PRESENCE_UPDATE") {
-                const activities = data.d.activities;
-                const spotifyActivity = activities.find(activity => activity.name === "Spotify");
-
-                if (spotifyActivity) {
-                    const imageUrl = `https://media.discordapp.net/${spotifyActivity.assets.large_image.replace("mp:", "")}`;
-                    document.getElementById("pfp").src = imageUrl;
-                }
-            }
-        });
-
-        // Fetch user alt text
-        fetch("https://avatars.split.pet/user/split/json")
-            .then((d) => d.json())
-            .then(
-                ({ altText }) =>
-                    (document.getElementById("pfp").alt = altText)
-            );
-    </script>
-</picture>
+            <picture>
+                <source
+                    srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
+                    type="image/webp"
+                />
+                <img
+                    id="pfp"
+                    src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
+                    width="256"
+                    height="256"
+                    alt="thewiilover's pfp"
+                />
+                <OrnamentLayer />
+                <script is:inline>
+                    fetch("https://avatars.split.pet/user/split/json")
+                        .then((d) => d.json())
+                        .then(
+                            ({ altText }) =>
+                                (document.getElementById("pfp").alt = altText),
+                        );
+                </script>
+            </picture>
        </Fragment>
 
         <Fragment slot="title">
