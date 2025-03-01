@@ -62,18 +62,6 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
             <!--
                 <Picture src={pfp} formats={['avif', 'webp']} alt="Mahiro Oyama" loading="eager" />
             -->
-            <picture>
-                <source
-                    srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-                    type="image/webp"
-                />
-                <img
-                    id="pfp"
-                    src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
-                    width="256"
-                    height="256"
-                    alt="thewiilover's pfp"
-                />
 <picture>
     <source
         srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
@@ -107,7 +95,7 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
         // Call updateSpotifyImage when Spotify is detected
         updateSpotifyImage();
     </script>
-            </picture>
+</picture>
        </Fragment>
 
         <Fragment slot="title">
