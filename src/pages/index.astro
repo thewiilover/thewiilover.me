@@ -74,15 +74,39 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
                     height="256"
                     alt="thewiilover's pfp"
                 />
-                <OrnamentLayer />
-                <script is:inline>
-                    fetch("https://avatars.split.pet/user/split/json")
-                        .then((d) => d.json())
-                        .then(
-                            ({ altText }) =>
-                                (document.getElementById("pfp").alt = altText),
-                        );
-                </script>
+<picture>
+    <source
+        srcset="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
+        type="image/webp"
+    />
+    <img
+        id="pfp"
+        src="https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80"
+        width="256"
+        height="256"
+        alt="thewiilover's pfp"
+    />
+    <OrnamentLayer />
+    <script is:inline>
+        fetch("https://avatars.split.pet/user/split/json")
+            .then((d) => d.json())
+            .then(
+                ({ altText }) =>
+                    (document.getElementById("pfp").alt = altText),
+            );
+
+        // Detect Spotify activity and update image
+        const updateSpotifyImage = () => {
+            const activity = { /* place your Spotify activity detection logic here */ };
+            if (activity && activity.name === "Spotify") {
+                const imageUrl = `https://media.discordapp.net/${activity.assets.large_image.replace("mp:", "")}`;
+                document.getElementById("pfp").src = imageUrl;
+            }
+        };
+
+        // Call updateSpotifyImage when Spotify is detected
+        updateSpotifyImage();
+    </script>
             </picture>
        </Fragment>
 
