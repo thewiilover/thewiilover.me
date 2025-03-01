@@ -7,6 +7,13 @@
     interface LanyardPart {
         discord_status: "online" | "idle" | "dnd" | "offline"
         activities: Discord.GatewayActivity[]
+        spotify?: {
+            album_art_url: string;
+            album: string;
+            artist: string;
+            song: string;
+            // other Spotify fields that might be available...
+        }
     }
     type LanyardMessage =
         | { op: 1; heartbeat_interval?: number }
@@ -60,7 +67,11 @@
     function actimg(url?: string, appid?: string, activity_name?: string) {
         // Special case for Spotify
         if (activity_name === "Spotify") {
-            return "../../src/images/musicnote.svg"; // Path to your Spotify icon
+            // Use actual album art from Lanyard data if available
+            if (lastRendered?.spotify?.album_art_url) {
+                return lastRendered.spotify.album_art_url;
+            }
+            return "../../src/images/musicnote.svg"; // Fallback to music note icon
         }
         
         return (
