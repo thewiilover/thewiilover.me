@@ -8,19 +8,15 @@ import {
     siSteam,
     siJavascript,
     siSvelte,
-    siAstro,
-    siArchlinux,
     siTypescript,
     siBun,
     siNodedotjs,
     siBluesky,
     siLastdotfm,
     siSteamdeck,
+    siMastodon,
 } from "simple-icons";
-import Posts from "../components/Posts.astro";
 import IconList from "../components/IconList.astro";
-import Buttons from "../components/buttons/Buttons.astro";
-import BtnFx from "../components/buttons/BtnFx.astro";
 import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
 
 ---
@@ -28,7 +24,7 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
 <Page
     title="Wii's Site"
     description="hi this is my shitty website"
-    meta={[{ name: "og:image", content: "/pfp/mahiropfp_butwithart.png" }]}
+    meta={[{ name: "og:image", content: "https://cdn.discordapp.com/avatars/768583702283288597/5f033678d88e82b69035bff457cb00d4.webp?size=80" }]}
 >
     <PersonHeader
         socials={[
@@ -56,6 +52,11 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
                 icon: siLastdotfm.svg,
                 color: "#" + siLastdotfm.hex,
             },
+            {
+                url: "https://mastodon.social/@thewiilover",
+                icon: siMastodon.svg,
+                color: "#" + siMastodon.hex,
+            }
         ]}
     >
         <Fragment slot="pfp">
