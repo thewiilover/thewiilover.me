@@ -1,7 +1,7 @@
 ---
 import "@fontsource-variable/inter"
 import "../style/index.scss"
-import { siAstro, siGithub, siCloudflarepages } from "simple-icons"
+import { siAstro, siGithub, siGithubpages } from "simple-icons"
 import Preloader from "../components/mcmastercarr/Main.astro"
 
 const { title, description, meta } = Astro.props
@@ -111,9 +111,9 @@ interface Props {
 
                 <footer>
                     <h3>
-                        <a href="/">split.pet</a>
-                        <a href="/docs" class="subroute">/docs</a>
-                        <a href="/blog" class="subroute">/blog</a>
+                        <a href="/">thewiilover.me</a>
+                        <!-- <a href="/docs" class="subroute">/docs</a> 
+                        <a href="/blog" class="subroute">/blog</a> -->
                         <br />
                         {title}
                     </h3>
@@ -126,19 +126,19 @@ interface Props {
                             <Fragment set:html={siAstro.svg} />&thinsp;Astro</a
                         >
                         on
-                        <a href="https://github.com/nbitzz/split.pet">
+                        <a href="https://github.com/thewiilover/thewiilover.me">
                             <Fragment
                                 set:html={siGithub.svg}
                             />&thinsp;GitHub</a
                         >
                         and hosted with
                         <a
-                            href="https://pages.cloudflare.com/"
-                            style={"color:#" + siCloudflarepages.hex}
+                            href="https://pages.github.com/"
+                            style={"color:#" + siGithubpages.hex}
                         >
                             <Fragment
-                                set:html={siCloudflarepages.svg}
-                            />&thinsp;Cloudflare Pages</a
+                                set:html={siGithubpages.svg}
+                            />&thinsp;Github Pages</a
                         >
                     </p>
                 </footer>
