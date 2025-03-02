@@ -1,13 +1,14 @@
 ---
-import { injectTitleIntoSvg } from '../util/ohgodpleasehelpme'
+import { injectTitleIntoSvg } from "../util/ohgodpleasehelpme";
 
 export interface Props {
-    list: {url?: string, icon: string, color?: string, title?: string}[],
-    forSocials?: boolean
+    list: { url?: string; icon: string; color?: string; title?: string }[];
+    forSocials?: boolean;
 }
 
-const {list, forSocials} = Astro.props
+const { list, forSocials } = Astro.props;
 ---
+
 <style lang="scss">
     ul.iconList {
         list-style: none;
@@ -17,7 +18,7 @@ const {list, forSocials} = Astro.props
         display: flex;
         justify-content: center;
         gap: 0.5em;
-        
+
         & a {
             text-decoration: none;
             transition-duration: 200ms;
@@ -25,12 +26,17 @@ const {list, forSocials} = Astro.props
             --iconColor: --c-text;
             display: flex; // makes the li height the same as the svg heigh t
             &[href="javascript:void(0)"] {
-                cursor:default;
+                cursor: default;
             }
-            &:hover, &:focus-visible {
+            &:hover,
+            &:focus-visible {
                 color: var(--iconColor) !important;
                 @media (prefers-color-scheme: light) {
-                    color: color-mix(in hsl, var(--iconColor), #000000 30%) !important;
+                    color: color-mix(
+                        in hsl,
+                        var(--iconColor),
+                        #000000 30%
+                    ) !important;
                 }
             }
             & > svg {
@@ -47,12 +53,23 @@ const {list, forSocials} = Astro.props
 
 <ul class="iconList">
     {
-        list.map(obj => 
+        list.map((obj) => (
             <li>
-                <a href={obj.url} {...(forSocials ? {rel:"me"} : {})} style={obj.color ? `--iconColor: ${obj.color};` : ""} target="_blank">
-                    <Fragment set:html={obj.title?injectTitleIntoSvg(obj.icon, obj.title):obj.icon} />
+                <a
+                    href={obj.url}
+                    {...(forSocials ? { rel: "me" } : {})}
+                    style={obj.color ? `--iconColor: ${obj.color};` : ""}
+                    target="_blank"
+                >
+                    <Fragment
+                        set:html={
+                            obj.title
+                                ? injectTitleIntoSvg(obj.icon, obj.title)
+                                : obj.icon
+                        }
+                    />
                 </a>
             </li>
-        )
+        ))
     }
 </ul>

@@ -11,17 +11,17 @@ import {
     siOpenid,
     siCloudflareworkers,
     siTypescript,
-} from "simple-icons"
-import server from "@fluentui/svg-icons/icons/live_24_regular.svg?raw"
-import website from "@fluentui/svg-icons/icons/window_24_filled.svg?raw"
-import launch from "@fluentui/svg-icons/icons/open_24_filled.svg?raw"
-import files from "@fluentui/svg-icons/icons/folder_24_filled.svg?raw"
-import download from "@fluentui/svg-icons/icons/arrow_download_24_filled.svg?raw"
-import { injectTitleIntoSvg } from "../util/ohgodpleasehelpme"
+} from "simple-icons";
+import server from "@fluentui/svg-icons/icons/live_24_regular.svg?raw";
+import website from "@fluentui/svg-icons/icons/window_24_filled.svg?raw";
+import launch from "@fluentui/svg-icons/icons/open_24_filled.svg?raw";
+import files from "@fluentui/svg-icons/icons/folder_24_filled.svg?raw";
+import download from "@fluentui/svg-icons/icons/arrow_download_24_filled.svg?raw";
+import { injectTitleIntoSvg } from "../util/ohgodpleasehelpme";
 
 interface Icon {
-    icon: string
-    defaultTitle: string
+    icon: string;
+    defaultTitle: string;
 }
 
 const availButtons = {
@@ -53,7 +53,7 @@ const availButtons = {
         icon: siActivitypub.svg,
         defaultTitle: "Fediverse",
     },
-} satisfies Record<string, Icon>
+} satisfies Record<string, Icon>;
 
 const availTech = {
     astro: {
@@ -111,34 +111,34 @@ const availTech = {
         name: "TypeScript",
         href: "https://typescriptlang.org",
     },
-} satisfies Record<string, Tech>
+} satisfies Record<string, Tech>;
 
 export interface Chip {
-    icon: keyof typeof availButtons | Icon
-    href: string
-    title?: string
-    sub?: string
+    icon: keyof typeof availButtons | Icon;
+    href: string;
+    title?: string;
+    sub?: string;
 }
 
 export interface Tech {
-    icon: string
-    name: string
-    href: string
+    icon: string;
+    name: string;
+    href: string;
 }
 
-export type TechResolvable = keyof typeof availTech
+export type TechResolvable = keyof typeof availTech;
 
 export interface Props {
-    name: string
-    tech: TechResolvable[]
-    chips: Chip[]
+    name: string;
+    tech: TechResolvable[];
+    chips: Chip[];
 }
 
-const { name, chips, tech } = Astro.props
+const { name, chips, tech } = Astro.props;
 
-const resolvedTech = tech.map(e =>
-    typeof e == "string" ? availTech[e] : e
-) as Tech[]
+const resolvedTech = tech.map((e) =>
+    typeof e == "string" ? availTech[e] : e,
+) as Tech[];
 ---
 
 <style lang="scss">
@@ -194,33 +194,33 @@ const resolvedTech = tech.map(e =>
             <p class="tech">
                 {
                     resolvedTech
-                        .map(technology =>
+                        .map((technology) =>
                             /* prettier-ignore */
-                            <a href={technology.href} target="_blank"><Fragment set:html={technology.icon} /></a>
+                            <a href={technology.href} target="_blank"><Fragment set:html={technology.icon} /></a>,
                         )
                         .flatMap((v, i, a) =>
-                            a.length - 1 == i ? v : [v, <>&thinsp;</>]
+                            a.length - 1 == i ? v : [v, <>&thinsp;</>],
                         )
                 }
                 {
                     resolvedTech
-                        .map(technology =>
+                        .map((technology) =>
                             /* prettier-ignore */
-                            <a href={technology.href} target="_blank">{technology.name}</a>
+                            <a href={technology.href} target="_blank">{technology.name}</a>,
                         )
                         .flatMap((v, i, a) =>
-                            a.length - 1 == i ? v : [v, ", "]
+                            a.length - 1 == i ? v : [v, ", "],
                         )
                 }
             </p>
         </hgroup>
         <div class="chips">
             {
-                chips.map(chip => {
+                chips.map((chip) => {
                     let { icon, defaultTitle } =
                         typeof chip.icon == "object"
                             ? chip.icon
-                            : availButtons[chip.icon]
+                            : availButtons[chip.icon];
                     return (
                         <a href={chip.href} target="_blank">
                             <div class="chipIconContainer">
@@ -228,7 +228,7 @@ const resolvedTech = tech.map(e =>
                             </div>
                             <span>{chip.title || defaultTitle}</span>
                         </a>
-                    )
+                    );
                 })
             }
         </div>

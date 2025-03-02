@@ -1,18 +1,18 @@
 ---
-import type { HTMLAttributes } from "astro/types"
+import type { HTMLAttributes } from "astro/types";
 
-const { quotes, noHeader, extraAttributes } = Astro.props
+const { quotes, noHeader, extraAttributes } = Astro.props;
 
 interface Quote {
-    text: string
+    text: string;
     // dont feel like using Date here
-    date: `${number}-${number}-${number}`
+    date: `${number}-${number}-${number}`;
 }
 
 interface Props {
-    quotes: Quote[]
-    noHeader?: boolean
-    extraAttributes?: HTMLAttributes<"section"> // i should kill myself
+    quotes: Quote[];
+    noHeader?: boolean;
+    extraAttributes?: HTMLAttributes<"section">; // i should kill myself
 }
 ---
 

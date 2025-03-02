@@ -19,7 +19,7 @@ const BaseCollectionItem = z.object({
 export const collections = {
     posts: defineCollection({
         type: "content",
-        schema: BaseCollectionItem.omit({order: true}).extend({
+        schema: BaseCollectionItem.omit({ order: true }).extend({
             unlisted: z.boolean().optional(),
             tags: z.array(z.string()).optional()
         })

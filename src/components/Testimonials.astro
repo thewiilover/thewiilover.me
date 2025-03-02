@@ -1,19 +1,20 @@
 ---
-import type { HTMLAttributes } from 'astro/types'
+import type { HTMLAttributes } from "astro/types";
 
-const {testimonials, noHeader, extraAttributes} = Astro.props
+const { testimonials, noHeader, extraAttributes } = Astro.props;
 
 interface Testimonial {
-    text: string,
-    from: string
+    text: string;
+    from: string;
 }
 
 interface Props {
-    testimonials: Testimonial[],
-    noHeader?: boolean,
-    extraAttributes?: HTMLAttributes<'section'> // i should kill myself
+    testimonials: Testimonial[];
+    noHeader?: boolean;
+    extraAttributes?: HTMLAttributes<"section">; // i should kill myself
 }
 ---
+
 <style lang="scss">
     .testimonial {
         text-align: left;
@@ -33,7 +34,7 @@ interface Props {
         }
         & > address {
             color: var(--c-subtext1);
-            font-size:small;
+            font-size: small;
         }
         margin: 10px 0;
     }
@@ -41,11 +42,11 @@ interface Props {
 <section id="testimonials" class="insignificant" {...extraAttributes}>
     {!noHeader ? <h2 class="sectionDenoter">Testimonials</h2> : ""}
     {
-        testimonials.map(testimonial => 
+        testimonials.map((testimonial) => (
             <div class="testimonial">
                 <p>{testimonial.text}</p>
                 <address>{testimonial.from}</address>
             </div>
-        )
+        ))
     }
 </section>

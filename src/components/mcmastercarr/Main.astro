@@ -8,91 +8,91 @@
              * @description Fetch using the worker
              */
             get = (url, dom) => {
-                if (scache[url]) return
+                if (scache[url]) return;
 
                 let resolve,
-                    value = new Promise(res => (resolve = res))
-                scache[url] = { resolve, value }
+                    value = new Promise((res) => (resolve = res));
+                scache[url] = { resolve, value };
 
-                work.postMessage({ url, dom })
+                work.postMessage({ url, dom });
             },
             /**
              * @description Reload a script
              */
-            scrl = el => {
-                let n = document.createElement("script")
+            scrl = (el) => {
+                let n = document.createElement("script");
 
                 for (let { name, value } of el.attributes)
-                    n.setAttribute(name, value)
+                    n.setAttribute(name, value);
 
-                n.text = el.innerHTML
+                n.text = el.innerHTML;
                 // replace child
-                el.parentNode.replaceChild(n, el)
+                el.parentNode.replaceChild(n, el);
             },
             /**
              * @description Go to a page
              */
             go = async (_u, event) => {
                 // base url off current
-                const url = new URL(_u, window.location).toString()
+                const url = new URL(_u, window.location).toString();
 
                 // prevent default if going back
                 if (event) {
                     // this event will only ever be included when
                     // going to a new page, so
-                    event.preventDefault()
-                    history.pushState(url, null, url)
+                    event.preventDefault();
+                    history.pushState(url, null, url);
                 }
 
-                if (!scache[url]) get(url) // get prev page if not cached
+                if (!scache[url]) get(url); // get prev page if not cached
 
                 // load in new content
                 let v =
                     scache[url].value instanceof Promise
                         ? await scache[url].value
-                        : scache[url].value
+                        : scache[url].value;
 
-                if (!v) return (window.location.href = url)
+                if (!v) return (window.location.href = url);
 
-                let reps = [document.head, document.getElementById("all")]
+                let reps = [document.head, document.getElementById("all")];
 
                 // update content
-                reps.forEach((e, i) => (e.innerHTML = v[i]))
-                window.scrollTo({ top: 0 })
-                ref()
+                reps.forEach((e, i) => (e.innerHTML = v[i]));
+                window.scrollTo({ top: 0 });
+                ref();
 
                 // reload all script elements
-                reps.flatMap(e =>
-                    Array.from(e.getElementsByTagName("script"))
-                ).forEach(scrl)
+                reps.flatMap((e) =>
+                    Array.from(e.getElementsByTagName("script")),
+                ).forEach(scrl);
             },
             /**
              * @description Rehook on links, etc.
              */
-            ref = _ => {
+            ref = (_) => {
                 for (let el of document.body.getElementsByTagName("a")) {
                     if (
                         new URL(el.href, window.location).hostname !==
                         window.location.hostname
                     )
-                        continue
-                    el.addEventListener("click", e => go(el.href, e))
-                    el.addEventListener("mouseenter", _ => get(el.href))
+                        continue;
+                    el.addEventListener("click", (e) => go(el.href, e));
+                    el.addEventListener("mouseenter", (_) => get(el.href));
                 }
-                document.dispatchEvent(new Event("domready"))
-            }
+                document.dispatchEvent(new Event("domready"));
+            };
 
         work.onmessage = ({ data: { d, url } }) => {
-            scache[url].resolve(d)
-            scache[url].value = d
-        }
+            scache[url].resolve(d);
+            scache[url].value = d;
+        };
 
         // fix back button
-        window.addEventListener("popstate", _ => go(window.location))
+        window.addEventListener("popstate", (_) => go(window.location));
 
         // let's cache the current document now
-        get(window.location.href, document.documentElement.innerHTML)
+        get(window.location.href, document.documentElement.innerHTML);
 
-        ref()
+        ref();
     }
 </script>

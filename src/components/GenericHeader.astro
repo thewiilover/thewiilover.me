@@ -1,21 +1,21 @@
 ---
-import type { HTMLAttributes } from "astro/types"
-import { Picture } from "astro:assets"
-import dynImportImg from "../util/ohgodpleasehelpme"
+import type { HTMLAttributes } from "astro/types";
+import { Picture } from "astro:assets";
+import dynImportImg from "../util/ohgodpleasehelpme";
 
-const { styling, text, image } = Astro.props
+const { styling, text, image } = Astro.props;
 
 type BaseHeadImg = {
-    isTopper?: boolean
-    alt: string
-}
+    isTopper?: boolean;
+    alt: string;
+};
 
 export interface Props {
-    image?: (BaseHeadImg & { url: string }) | (BaseHeadImg & { path: string })
+    image?: (BaseHeadImg & { url: string }) | (BaseHeadImg & { path: string });
     styling?: {
-        noBottomPad?: boolean
-    }
-    text: string
+        noBottomPad?: boolean;
+    };
+    text: string;
 }
 ---
 

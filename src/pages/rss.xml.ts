@@ -1,4 +1,4 @@
-import rss, {pagesGlobToRssItems} from '@astrojs/rss';
+import rss, { pagesGlobToRssItems } from '@astrojs/rss';
 import type { MarkdownInstance, MDXInstance } from 'astro';
 import type { Props as PostProps } from "../layouts/Post.astro"
 import { getCollection } from 'astro:content';
@@ -10,7 +10,7 @@ export async function GET(context) {
     title: 'split.pet blog',
     description: 'blog hosted on split.pet by split!',
     site: context.site,
-    items: 
+    items:
       (posts
         .filter(e => e.data.pubDate && !e.data.unlisted)
         .map(e => {
