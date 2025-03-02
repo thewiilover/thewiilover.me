@@ -5,10 +5,10 @@
   <div class="spotify-not-playing">Not playing anything on Spotify</div>
   <div class="spotify-container" style="display: none;">
     <div class="spotify-info">
-      <img id="album-art" src="" alt="Album Art" width="64" height="64" />
+      <img id="spotify-album-art" src="" alt="Album Art" width="64" height="64" />
       <div class="spotify-text">
-        <div id="song-title" class="song-title"></div>
-        <div id="song-artist" class="song-artist"></div>
+        <div id="spotify-song-title" class="song-title"></div>
+        <div id="spotify-song-artist" class="song-artist"></div>
       </div>
     </div>
     <div class="spotify-progress">
@@ -21,12 +21,15 @@
 </div>
 
 <script is:inline>
-  document.addEventListener('spotify-update', (event) => {
-    const spotifyData = event.detail;
+  // Function to update the Spotify player UI
+  function updateSpotifyPlayer(data) {
     const container = document.querySelector('.spotify-container');
     const notPlaying = document.querySelector('.spotify-not-playing');
     
-    if (!spotifyData) {
+    // Check if there's a Spotify activity
+    const spotifyActivity = data?.activities?.find(activity => activity.name === 'Spotify');
+    
+    if (!spotifyActivity || !data?.spotify) {
       container.style.display = 'none';
       notPlaying.style.display = 'block';
       return;
@@ -37,16 +40,16 @@
     notPlaying.style.display = 'none';
     
     // Update album art
-    document.getElementById('album-art').src = spotifyData.album_art_url;
+    document.getElementById('spotify-album-art').src = data.spotify.album_art_url;
     
     // Update song info
-    document.getElementById('song-title').textContent = spotifyData.song;
-    document.getElementById('song-artist').textContent = spotifyData.artist;
+    document.getElementById('spotify-song-title').textContent = data.spotify.song;
+    document.getElementById('spotify-song-artist').textContent = data.spotify.artist;
     
     // Calculate progress and remaining time
-    if (spotifyData.timestamps) {
-      const start = spotifyData.timestamps.start;
-      const end = spotifyData.timestamps.end;
+    if (spotifyActivity.timestamps) {
+      const start = spotifyActivity.timestamps.start;
+      const end = spotifyActivity.timestamps.end;
       
       if (start && end) {
         const duration = end - start;
@@ -74,9 +77,62 @@
         updateProgress();
       }
     }
-  });
+  }
+
+  // Create a WebSocket connection to the Lanyard API
+  function connectToLanyard() {
+    const lanyardSocket = new WebSocket("wss://api.lanyard.rest/socket");
+    const userId = "768583702283288597"; // Your Discord user ID
+    
+    lanyardSocket.onopen = () => {
+      console.log("Connected to Lanyard WebSocket");
+      // Subscribe to updates
+      lanyardSocket.send(JSON.stringify({
+        op: 2,
+        d: {
+          subscribe_to_id: userId
+        }
+      }));
+    };
+    
+    lanyardSocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      
+      // Handle Lanyard messages
+      switch (data.op) {
+        case 1:
+          // Heartbeat received, set up interval
+          const interval = data.heartbeat_interval;
+          setInterval(() => {
+            lanyardSocket.send(JSON.stringify({ op: 3 }));
+          }, interval);
+          break;
+          
+        case 0:
+          // Actual data update
+          updateSpotifyPlayer(data.d);
+          break;
+      }
+    };
+    
+    lanyardSocket.onclose = () => {
+      console.log("Disconnected from Lanyard WebSocket, reconnecting in 5s");
+      setTimeout(connectToLanyard, 5000);
+    };
+    
+    lanyardSocket.onerror = (error) => {
+      console.error("Lanyard WebSocket error:", error);
+      lanyardSocket.close();
+    };
+  }
   
-  // Initially check if there's already Spotify data
-  const spotifyUpdateEvent = new CustomEvent('spotify-check');
-  document.dispatchEvent(spotifyUpdateEvent);
+  // Initialize connection to Lanyard
+  connectToLanyard();
+  
+  // Also listen for updates from OrnamentLayer if available
+  document.addEventListener('spotify-update', (event) => {
+    if (event.detail) {
+      updateSpotifyPlayer(event.detail);
+    }
+  });
 </script>
