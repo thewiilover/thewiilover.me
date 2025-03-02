@@ -3,15 +3,15 @@
 :root {
     font-family: "Inter Variable", InterVariable, Inter, sans-serif;
 }
-  
+
 body {
     background: #B2B2B2;
-    margin:0;
+    margin: 0;
 }
 
 #all {
     position: absolute;
-    left: calc( 100% - 70px );
+    left: calc(100% - 70px);
     transform: translateX(-100%);
     width: 390px;
     color: var(--c-text);
@@ -20,35 +20,36 @@ body {
 
     & svg {
         height: 1em;
-        vertical-align:middle;
+        vertical-align: middle;
     }
 
     & a {
         color: var(--c-subtext0);
     }
 
-    & > header > .contain > *, & > *:not(header) {
+    &>header>.contain>*,
+    &>*:not(header) {
         display: inline-block;
-        width: calc( 100% - 40px );
+        width: calc(100% - 40px);
         padding: 0 20px;
     }
 
     /* I'm sorry */
 
-    & > header {
-        width:100%;
+    &>header {
+        width: 100%;
         height: 100%;
         top: 0;
         overflow: hidden;
-        position:relative;
+        position: relative;
 
         &.high {
             height: 300px;
         }
 
-        & > .contain {
+        &>.contain {
 
-            top:100%;
+            top: 100%;
             transform: translateY(-100%);
             position: absolute;
             background: var(--c-background);
@@ -61,11 +62,11 @@ body {
             }
 
             & .topper {
-                position:absolute;
-                top: calc( 35px - 16px );
+                position: absolute;
+                top: calc(35px - 16px);
                 left: 50%;
                 transform: translate(-50%, -100%);
-                width:200px;
+                width: 200px;
                 height: auto;
             }
 
@@ -74,13 +75,13 @@ body {
                 padding-right: 0;
                 padding-top: 0;
 
-                & > .headerContent {
+                &>.headerContent {
                     padding-top: 10px;
                 }
             }
 
-            & > picture {
-                position:relative;
+            &>picture {
+                position: relative;
                 width: 100%;
                 padding: 0;
             }
@@ -96,22 +97,23 @@ body {
                 mask-image: linear-gradient(to bottom, #fff, transparent)
             }
 
-            & > #whoami {
+            &>#whoami {
                 --imgSize: 110px;
                 --borderThickness: 4px;
                 overflow: hidden;
 
-                height: calc( var(--imgSize) / 2 );
+                height: calc(var(--imgSize) / 2);
                 padding: 10px 20px;
-                
-                img, .lanyardOverlay {
+
+                img,
+                .lanyardOverlay {
                     height: var(--imgSize);
                     width: var(--imgSize);
                     position: absolute;
                     top: calc(var(--imgSize) / -2);
                 }
 
-                & picture > img {
+                & picture>img {
                     border-radius: 100%;
                     border: var(--borderThickness) solid var(--c-background);
                     background: #444444;
@@ -119,18 +121,18 @@ body {
 
                 & .lanyardOverlay {
                     left: 20px;
-                    top: calc( var(--imgSize) / -2 );
+                    top: calc(var(--imgSize) / -2);
                     padding: var(--borderThickness);
 
                     & .ornament {
                         /* UNHOLY */
                         --rad: calc(calc(var(--deg) * pi) / 180);
-                        left: calc( calc( 100% * calc( calc( cos( var(--rad) ) + 1 ) / 2 ) ) );
-                        top: calc( 100% * calc( calc( sin( var(--rad) ) + 1 ) / 2 ) );
-                        transform:translate(-50%,-50%);
+                        left: calc(calc(100% * calc(calc(cos(var(--rad)) + 1) / 2)));
+                        top: calc(100% * calc(calc(sin(var(--rad)) + 1) / 2));
+                        transform: translate(-50%, -50%);
                         transition-duration: 150ms;
                     }
-                        
+
                     & .activity {
                         height: 25px;
                         width: 25px;
@@ -138,6 +140,7 @@ body {
                         border-radius: 4px;
                         box-shadow: #222 0px 0px 3px;
                         background-color: var(--c-background);
+
                         &.sm {
                             height: 20px;
                             width: 20px;
@@ -146,35 +149,58 @@ body {
 
                     & .lanyardDot {
                         --deg: 45;
-                        border:4px solid var(--c-background);
-                        width:20px;
-                        height:20px;
-                        position:absolute;
-                        border-radius:20px;
-                        &[data-state="online"] { background-color: var(--c-green) };
-                        &[data-state="idle"] { background-color: var(--c-yellow) };
-                        &[data-state="dnd"] { background-color: var(--c-red) };
-                        &[data-state="offline"] { background-color: var(--c-subtext0) };
+                        border: 4px solid var(--c-background);
+                        width: 20px;
+                        height: 20px;
+                        position: absolute;
+                        border-radius: 20px;
+
+                        &[data-state="online"] {
+                            background-color: var(--c-green)
+                        }
+
+                        ;
+
+                        &[data-state="idle"] {
+                            background-color: var(--c-yellow)
+                        }
+
+                        ;
+
+                        &[data-state="dnd"] {
+                            background-color: var(--c-red)
+                        }
+
+                        ;
+
+                        &[data-state="offline"] {
+                            background-color: var(--c-subtext0)
+                        }
+
+                        ;
 
                         p {
                             position: absolute;
                             left: 50%;
                             top: 50%;
-                            transform:translate(-50%, -50%);
+                            transform: translate(-50%, -50%);
                         }
                     }
                 }
 
-                & > hgroup {
+                &>hgroup {
                     position: relative;
-                    left: calc(var(--imgSize) + calc( calc(var(--borderThickness) * 2) + 10px ));
-                    & > * {
+                    left: calc(var(--imgSize) + calc(calc(var(--borderThickness) * 2) + 10px));
+
+                    &>* {
                         margin: 0;
                     }
-                    & > h1 {
+
+                    &>h1 {
                         font-size: x-large;
                     }
-                    & > h2 {
+
+                    &>h2 {
                         font-size: medium;
                         font-weight: 300;
                         color: var(--c-subtext0);
@@ -182,17 +208,21 @@ body {
                 }
             }
 
-            & > address, & > .headerContent {
+            &>address,
+            &>.headerContent {
                 padding-bottom: 10px;
                 text-align: center;
             }
 
-            & > .headerContent {
+            &>.headerContent {
                 padding: 20px;
+
                 &.noBottomPad {
                     padding-bottom: 0 !important;
                 }
-                & > h1, & > h2 {
+
+                &>h1,
+                &>h2 {
                     margin: 0;
                 }
             }
@@ -206,44 +236,48 @@ body {
         font-size: medium;
         position: relative;
         margin: 15px 0;
-        
+
         &:first-of-type {
             margin: 0 0 15px
         }
     }
 
-    & > .significant {
+    &>.significant {
         background: linear-gradient(to bottom, var(--c-background), var(--c-background-transparent));
         flex-grow: 1;
         flex-shrink: 0;
     }
 
-    & > .insignificant {
+    &>.insignificant {
         background: var(--c-background-transparent);
     }
 
-    & > footer {
+    &>footer {
         background: var(--c-background);
         border-radius: 0 0 16px 16px;
         margin-bottom: 50px;
         color: var(--c-subtext1);
 
-        & > h3 {
+        &>h3 {
             margin-bottom: 0;
             font-size: medium;
             text-transform: uppercase;
-            & > a:not(.subroute) {
+
+            &>a:not(.subroute) {
                 text-decoration: none;
             }
-            & > a.subroute {
+
+            &>a.subroute {
                 color: var(--c-subtext1);
                 font-weight: 400;
                 text-transform: none;
             }
         }
-        & > p {
+
+        &>p {
             margin-top: 0;
-            & > a {
+
+            &>a {
                 color: var(--c-subtext1);
             }
         }
@@ -271,11 +305,14 @@ small {
         left: 50%;
         transform: translateX(-50%);
         width: 100%;
-        & > footer {
+
+        &>footer {
             margin-bottom: 0;
             border-radius: 0;
         }
-        & > .significant, & > .insignificant {
+
+        &>.significant,
+        &>.insignificant {
             backdrop-filter: blur(4px) brightness(75%);
         }
 
@@ -293,7 +330,7 @@ input[type=checkbox] {
     --transitionSpeed: 150ms;
 
     appearance: none;
-    border-radius: calc( var(--size) / 4 );
+    border-radius: calc(var(--size) / 4);
     background: #ccc;
     height: var(--size);
     aspect-ratio: 1 / 1;
@@ -310,7 +347,7 @@ input[type=checkbox] {
         border: 2px solid #999;
     }
 
-/*
+    /*
     &::before {
         content: "○";
         position: absolute;
@@ -325,14 +362,15 @@ input[type=checkbox] {
     }
 */
 
-    &::before, &::after {
+    &::before,
+    &::after {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         font-family: "Inter Variable", InterVariable, Inter, sans-serif;
         font-weight: 800;
-        font-size: calc( calc(var(--size) / 4) * 3 );
+        font-size: calc(calc(var(--size) / 4) * 3);
         margin: 0;
 
         transition-duration: var(--transitionSpeed);
@@ -353,10 +391,12 @@ input[type=checkbox] {
 
     &:checked {
         background: #AA88FF;
+
         &::before {
             opacity: 0;
             transform: translate(-150%, -50%);
         }
+
         &::after {
             opacity: 1;
             transform: translate(-50%, -50%);
@@ -381,12 +421,16 @@ input[type=checkbox] {
     .hide_when_high_contrast {
         display: none;
     }
-    .insignificant, .significant {
+
+    .insignificant,
+    .significant {
         background-color: var(--c-background) !important;
     }
 }
 
-svg { fill: currentColor }
+svg {
+    fill: currentColor
+}
 
 *:focus-visible {
     outline: 2px solid var(--c-subtext0);
@@ -403,80 +447,81 @@ svg { fill: currentColor }
 
 // Spotify Player Styling
 .spotify-player {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: var(--c-mantle);
-  max-width: 100%;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: var(--c-mantle);
+    max-width: 100%;
 }
 
 .spotify-not-playing {
-  text-align: center;
-  color: var(--c-subtext0);
-  padding: 1rem;
+    text-align: center;
+    color: var(--c-subtext0);
+    padding: 1rem;
 }
 
 .spotify-container {
-  width: 100%;
+    width: 100%;
 }
 
 .spotify-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 #album-art {
-  border-radius: 4px;
-  margin-right: 16px;
+    border-radius: 4px;
+    margin-right: 16px;
 }
 
 .spotify-text {
-  flex-grow: 1;
-  overflow: hidden;
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .song-title {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .song-artist {
-  font-size: 0.9rem;
-  color: var(--c-subtext1);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 0.9rem;
+    color: var(--c-subtext1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .spotify-progress {
-  position: relative;
+    position: relative;
 }
 
 .progress-bar {
-  height: 6px;
-  background-color: var(--c-surface0);
-  border-radius: 3px;
-  overflow: hidden;
+    height: 6px;
+    background-color: var(--c-surface0);
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .progress-fill {
-  height: 100%;
-  background-color: #1DB954; /* Spotify green */
-  width: 0%;
-  transition: width 1s linear;
+    height: 100%;
+    background-color: #1DB954;
+    /* Spotify green */
+    width: 0%;
+    transition: width 1s linear;
 }
 
 .time-remaining {
-  position: absolute;
-  right: 0;
-  top: 8px;
-  font-size: 0.75rem;
-  color: var(--c-subtext0);
+    position: absolute;
+    right: 0;
+    top: 8px;
+    font-size: 0.75rem;
+    color: var(--c-subtext0);
 }
 
 /* PersonHeader styles */

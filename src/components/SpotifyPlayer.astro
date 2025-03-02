@@ -1,264 +1,308 @@
 ---
+
 ---
 
 <div class="spotify-player">
-  <div class="spotify-not-playing">Not playing anything on Spotify</div>
-  <div class="spotify-container" style="display: none;">
-    <div class="spotify-info">
-      <img id="spotify-album-art" src="" alt="Album Art" width="64" height="64" />
-      <div class="spotify-text">
-        <div id="spotify-song-title" class="song-title"></div>
-        <div id="spotify-song-artist" class="song-artist"></div>
-        <div id="spotify-status" class="status-text"></div>
-      </div>
+    <div class="spotify-not-playing">Not playing anything on Spotify</div>
+    <div class="spotify-container" style="display: none;">
+        <div class="spotify-info">
+            <img
+                id="spotify-album-art"
+                src=""
+                alt="Album Art"
+                width="64"
+                height="64"
+            />
+            <div class="spotify-text">
+                <div id="spotify-song-title" class="song-title"></div>
+                <div id="spotify-song-artist" class="song-artist"></div>
+                <div id="spotify-status" class="status-text"></div>
+            </div>
+        </div>
+        <div class="spotify-progress">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+                <!-- Fixed the image path with absolute URL -->
+                <img
+                    id="miku-icon"
+                    class="miku-icon"
+                    src="/miku.png"
+                    alt="Miku"
+                    style="display: none;"
+                />
+            </div>
+            <div id="time-remaining" class="time-remaining"></div>
+        </div>
     </div>
-    <div class="spotify-progress">
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <!-- Fixed the image path with absolute URL -->
-        <img id="miku-icon" class="miku-icon" src="/miku.png" alt="Miku" style="display: none;" />
-      </div>
-      <div id="time-remaining" class="time-remaining"></div>
-    </div>
-  </div>
 </div>
 
 <script is:inline>
-  // Store the last played song
-  let lastSpotifyData = null;
-  let isCurrentlyPlaying = false;
+    // Store the last played song
+    let lastSpotifyData = null;
+    let isCurrentlyPlaying = false;
 
-  // Function to update the Spotify player UI
-  function updateSpotifyPlayer(data) {
-    const container = document.querySelector('.spotify-container');
-    const notPlaying = document.querySelector('.spotify-not-playing');
-    const mikuIcon = document.getElementById('miku-icon');
-    
-    // Check if there's a Spotify activity
-    const spotifyActivity = data?.activities?.find(activity => activity.name === 'Spotify');
-    
-    if (spotifyActivity && data?.spotify) {
-      // Currently playing - save this data
-      lastSpotifyData = {
-        activity: spotifyActivity,
-        spotify: data.spotify
-      };
-      isCurrentlyPlaying = true;
-      
-      // Show the player
-      container.style.display = 'block';
-      notPlaying.style.display = 'none';
-      
-      // Update album art
-      document.getElementById('spotify-album-art').src = data.spotify.album_art_url;
-      
-      // Update song info
-      document.getElementById('spotify-song-title').textContent = data.spotify.song;
-      document.getElementById('spotify-song-artist').textContent = data.spotify.artist;
-      document.getElementById('spotify-status').textContent = "Now Playing";
-      
-      // Debug log to check artist name
-      console.log("Current artist:", data.spotify.artist);
-      
-      // Check if artist is Hatsune Miku and show the Miku icon
-      if (data.spotify.artist.toLowerCase().includes("hatsune miku") || 
-          data.spotify.artist.toLowerCase().includes("初音ミク")) {
-        console.log("Miku detected! Showing icon.");
-        mikuIcon.style.display = 'block';
-      } else {
-        mikuIcon.style.display = 'none';
-      }
-      
-      // Calculate progress and remaining time
-      if (spotifyActivity.timestamps) {
-        const start = spotifyActivity.timestamps.start;
-        const end = spotifyActivity.timestamps.end;
-        
-        if (start && end) {
-          const duration = end - start;
-          const updateProgress = () => {
-            const now = Date.now();
-            const elapsed = now - start;
-            const remaining = Math.max(0, end - now);
-            
-            // Update progress bar
-            const progressPercent = Math.min(100, (elapsed / duration) * 100);
-            document.querySelector('.progress-fill').style.width = `${progressPercent}%`;
-            
-            // Update remaining time
-            const remainingMinutes = Math.floor(remaining / 60000);
-            const remainingSeconds = Math.floor((remaining % 60000) / 1000);
-            document.getElementById('time-remaining').textContent = 
-              `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-            
-            // Continue updating if song is still playing
-            if (now < end && isCurrentlyPlaying) {
-              requestAnimationFrame(updateProgress);
+    // Function to update the Spotify player UI
+    function updateSpotifyPlayer(data) {
+        const container = document.querySelector(".spotify-container");
+        const notPlaying = document.querySelector(".spotify-not-playing");
+        const mikuIcon = document.getElementById("miku-icon");
+
+        // Check if there's a Spotify activity
+        const spotifyActivity = data?.activities?.find(
+            (activity) => activity.name === "Spotify",
+        );
+
+        if (spotifyActivity && data?.spotify) {
+            // Currently playing - save this data
+            lastSpotifyData = {
+                activity: spotifyActivity,
+                spotify: data.spotify,
+            };
+            isCurrentlyPlaying = true;
+
+            // Show the player
+            container.style.display = "block";
+            notPlaying.style.display = "none";
+
+            // Update album art
+            document.getElementById("spotify-album-art").src =
+                data.spotify.album_art_url;
+
+            // Update song info
+            document.getElementById("spotify-song-title").textContent =
+                data.spotify.song;
+            document.getElementById("spotify-song-artist").textContent =
+                data.spotify.artist;
+            document.getElementById("spotify-status").textContent =
+                "Now Playing";
+
+            // Debug log to check artist name
+            console.log("Current artist:", data.spotify.artist);
+
+            // Check if artist is Hatsune Miku and show the Miku icon
+            if (
+                data.spotify.artist.toLowerCase().includes("hatsune miku") ||
+                data.spotify.artist.toLowerCase().includes("初音ミク")
+            ) {
+                console.log("Miku detected! Showing icon.");
+                mikuIcon.style.display = "block";
+            } else {
+                mikuIcon.style.display = "none";
             }
-          };
-          
-          updateProgress();
-        }
-      }
-    } else if (lastSpotifyData) {
-      // Not currently playing but we have last played data
-      isCurrentlyPlaying = false;
-      
-      // Show the player with last played data
-      container.style.display = 'block';
-      notPlaying.style.display = 'none';
-      
-      // Update album art
-      document.getElementById('spotify-album-art').src = lastSpotifyData.spotify.album_art_url;
-      
-      // Update song info
-      document.getElementById('spotify-song-title').textContent = lastSpotifyData.spotify.song;
-      document.getElementById('spotify-song-artist').textContent = lastSpotifyData.spotify.artist;
-      document.getElementById('spotify-status').textContent = "Last Played";
-      
-      // Check if artist is Hatsune Miku and show the Miku icon
-      if (lastSpotifyData.spotify.artist.toLowerCase().includes("hatsune miku") || 
-          lastSpotifyData.spotify.artist.toLowerCase().includes("初音ミク")) {
-        mikuIcon.style.display = 'block';
-      } else {
-        mikuIcon.style.display = 'none';
-      }
-      
-      // Show full progress bar for last played
-      document.querySelector('.progress-fill').style.width = '100%';
-      document.getElementById('time-remaining').textContent = '';
-    } else {
-      // No current or last played data
-      container.style.display = 'none';
-      notPlaying.style.display = 'block';
-      mikuIcon.style.display = 'none';
-    }
-  }
 
-  // Create a WebSocket connection to the Lanyard API
-  function connectToLanyard() {
-    const lanyardSocket = new WebSocket("wss://api.lanyard.rest/socket");
-    const userId = "768583702283288597"; // Your Discord user ID
-    
-    lanyardSocket.onopen = () => {
-      console.log("Connected to Lanyard WebSocket");
-      // Subscribe to updates
-      lanyardSocket.send(JSON.stringify({
-        op: 2,
-        d: {
-          subscribe_to_id: userId
+            // Calculate progress and remaining time
+            if (spotifyActivity.timestamps) {
+                const start = spotifyActivity.timestamps.start;
+                const end = spotifyActivity.timestamps.end;
+
+                if (start && end) {
+                    const duration = end - start;
+                    const updateProgress = () => {
+                        const now = Date.now();
+                        const elapsed = now - start;
+                        const remaining = Math.max(0, end - now);
+
+                        // Update progress bar
+                        const progressPercent = Math.min(
+                            100,
+                            (elapsed / duration) * 100,
+                        );
+                        document.querySelector(".progress-fill").style.width =
+                            `${progressPercent}%`;
+
+                        // Update remaining time
+                        const remainingMinutes = Math.floor(remaining / 60000);
+                        const remainingSeconds = Math.floor(
+                            (remaining % 60000) / 1000,
+                        );
+                        document.getElementById("time-remaining").textContent =
+                            `${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+
+                        // Continue updating if song is still playing
+                        if (now < end && isCurrentlyPlaying) {
+                            requestAnimationFrame(updateProgress);
+                        }
+                    };
+
+                    updateProgress();
+                }
+            }
+        } else if (lastSpotifyData) {
+            // Not currently playing but we have last played data
+            isCurrentlyPlaying = false;
+
+            // Show the player with last played data
+            container.style.display = "block";
+            notPlaying.style.display = "none";
+
+            // Update album art
+            document.getElementById("spotify-album-art").src =
+                lastSpotifyData.spotify.album_art_url;
+
+            // Update song info
+            document.getElementById("spotify-song-title").textContent =
+                lastSpotifyData.spotify.song;
+            document.getElementById("spotify-song-artist").textContent =
+                lastSpotifyData.spotify.artist;
+            document.getElementById("spotify-status").textContent =
+                "Last Played";
+
+            // Check if artist is Hatsune Miku and show the Miku icon
+            if (
+                lastSpotifyData.spotify.artist
+                    .toLowerCase()
+                    .includes("hatsune miku") ||
+                lastSpotifyData.spotify.artist
+                    .toLowerCase()
+                    .includes("初音ミク")
+            ) {
+                mikuIcon.style.display = "block";
+            } else {
+                mikuIcon.style.display = "none";
+            }
+
+            // Show full progress bar for last played
+            document.querySelector(".progress-fill").style.width = "100%";
+            document.getElementById("time-remaining").textContent = "";
+        } else {
+            // No current or last played data
+            container.style.display = "none";
+            notPlaying.style.display = "block";
+            mikuIcon.style.display = "none";
         }
-      }));
-    };
-    
-    lanyardSocket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      // Handle Lanyard messages
-      switch (data.op) {
-        case 1:
-          // Heartbeat received, set up interval
-          const interval = data.heartbeat_interval;
-          setInterval(() => {
-            lanyardSocket.send(JSON.stringify({ op: 3 }));
-          }, interval);
-          break;
-          
-        case 0:
-          // Actual data update
-          updateSpotifyPlayer(data.d);
-          break;
-      }
-    };
-    
-    lanyardSocket.onclose = () => {
-      console.log("Disconnected from Lanyard WebSocket, reconnecting in 5s");
-      setTimeout(connectToLanyard, 5000);
-    };
-    
-    lanyardSocket.onerror = (error) => {
-      console.error("Lanyard WebSocket error:", error);
-      lanyardSocket.close();
-    };
-  }
-  
-  // Try to fetch last played data from localStorage on page load
-  const storedLastPlayed = localStorage.getItem('lastSpotifyData');
-  if (storedLastPlayed) {
-    try {
-      lastSpotifyData = JSON.parse(storedLastPlayed);
-      // Show last played song immediately while waiting for WebSocket connection
-      updateSpotifyPlayer({});
-    } catch (e) {
-      console.error("Error loading stored Spotify data", e);
     }
-  }
-  
-  // Initialize connection to Lanyard
-  connectToLanyard();
-  
-  // Store last played data when leaving the page
-  window.addEventListener('beforeunload', () => {
-    if (lastSpotifyData) {
-      localStorage.setItem('lastSpotifyData', JSON.stringify(lastSpotifyData));
+
+    // Create a WebSocket connection to the Lanyard API
+    function connectToLanyard() {
+        const lanyardSocket = new WebSocket("wss://api.lanyard.rest/socket");
+        const userId = "768583702283288597"; // Your Discord user ID
+
+        lanyardSocket.onopen = () => {
+            console.log("Connected to Lanyard WebSocket");
+            // Subscribe to updates
+            lanyardSocket.send(
+                JSON.stringify({
+                    op: 2,
+                    d: {
+                        subscribe_to_id: userId,
+                    },
+                }),
+            );
+        };
+
+        lanyardSocket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            // Handle Lanyard messages
+            switch (data.op) {
+                case 1:
+                    // Heartbeat received, set up interval
+                    const interval = data.heartbeat_interval;
+                    setInterval(() => {
+                        lanyardSocket.send(JSON.stringify({ op: 3 }));
+                    }, interval);
+                    break;
+
+                case 0:
+                    // Actual data update
+                    updateSpotifyPlayer(data.d);
+                    break;
+            }
+        };
+
+        lanyardSocket.onclose = () => {
+            console.log(
+                "Disconnected from Lanyard WebSocket, reconnecting in 5s",
+            );
+            setTimeout(connectToLanyard, 5000);
+        };
+
+        lanyardSocket.onerror = (error) => {
+            console.error("Lanyard WebSocket error:", error);
+            lanyardSocket.close();
+        };
     }
-  });
-  
-  // Also listen for updates from OrnamentLayer if available
-  document.addEventListener('spotify-update', (event) => {
-    if (event.detail) {
-      updateSpotifyPlayer(event.detail);
+
+    // Try to fetch last played data from localStorage on page load
+    const storedLastPlayed = localStorage.getItem("lastSpotifyData");
+    if (storedLastPlayed) {
+        try {
+            lastSpotifyData = JSON.parse(storedLastPlayed);
+            // Show last played song immediately while waiting for WebSocket connection
+            updateSpotifyPlayer({});
+        } catch (e) {
+            console.error("Error loading stored Spotify data", e);
+        }
     }
-  });
+
+    // Initialize connection to Lanyard
+    connectToLanyard();
+
+    // Store last played data when leaving the page
+    window.addEventListener("beforeunload", () => {
+        if (lastSpotifyData) {
+            localStorage.setItem(
+                "lastSpotifyData",
+                JSON.stringify(lastSpotifyData),
+            );
+        }
+    });
+
+    // Also listen for updates from OrnamentLayer if available
+    document.addEventListener("spotify-update", (event) => {
+        if (event.detail) {
+            updateSpotifyPlayer(event.detail);
+        }
+    });
 </script>
 
 <style>
-  .spotify-text {
-    padding-left: 10px; /* Add 10px of padding to the left */
-  }
-  
-  .status-text {
-    font-size: 0.8rem;
-    color: var(--c-subtext0);
-    margin-top: 2px;
-  }
-  
-  .spotify-progress {
-    position: relative;
-    margin-top: 15px; /* Added more space for the icon */
-  }
-  
-  .progress-bar {
-    height: 6px;
-    background-color: var(--c-surface0);
-    border-radius: 3px;
-    overflow: visible; /* Changed from hidden to visible to show the Miku icon */
-    position: relative;
-  }
-  
-  .progress-fill {
-    height: 100%;
-    background-color: #1DB954; /* Spotify green */
-    width: 0%;
-    border-radius: 3px;
-    transition: width 1s linear;
-  }
-  
-  .miku-icon {
-    position: absolute;
-    top: -20px; /* Position higher above the progress bar */
-    right: -12px; /* Position at the end of the progress bar */
-    width: 24px;
-    height: 24px;
-    z-index: 10; /* Higher z-index to ensure it's visible */
-    pointer-events: none; /* Prevents the icon from interfering with interactions */
-  }
-  
-  .time-remaining {
-    position: absolute;
-    right: 0;
-    top: 8px;
-    font-size: 0.75rem;
-    color: var(--c-subtext0);
-  }
+    .spotify-text {
+        padding-left: 10px; /* Add 10px of padding to the left */
+    }
+
+    .status-text {
+        font-size: 0.8rem;
+        color: var(--c-subtext0);
+        margin-top: 2px;
+    }
+
+    .spotify-progress {
+        position: relative;
+        margin-top: 15px; /* Added more space for the icon */
+    }
+
+    .progress-bar {
+        height: 6px;
+        background-color: var(--c-surface0);
+        border-radius: 3px;
+        overflow: visible; /* Changed from hidden to visible to show the Miku icon */
+        position: relative;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background-color: #1db954; /* Spotify green */
+        width: 0%;
+        border-radius: 3px;
+        transition: width 1s linear;
+    }
+
+    .miku-icon {
+        position: absolute;
+        top: -20px; /* Position higher above the progress bar */
+        right: -12px; /* Position at the end of the progress bar */
+        width: 24px;
+        height: 24px;
+        z-index: 10; /* Higher z-index to ensure it's visible */
+        pointer-events: none; /* Prevents the icon from interfering with interactions */
+    }
+
+    .time-remaining {
+        position: absolute;
+        right: 0;
+        top: 8px;
+        font-size: 0.75rem;
+        color: var(--c-subtext0);
+    }
 </style>

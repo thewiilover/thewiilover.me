@@ -1,17 +1,14 @@
 ---
-import IconList, { type Props as IconListProps } from './IconList.astro'
-const {
-    title,
-    description,
-    socials
-} = Astro.props
+import IconList, { type Props as IconListProps } from "./IconList.astro";
+const { title, description, socials } = Astro.props;
 
 interface Props {
-    title?: string,
-    description?: string,
-    socials: IconListProps["list"]
+    title?: string;
+    description?: string;
+    socials: IconListProps["list"];
 }
 ---
+
 <header>
     <div class="contain">
         <div id="whoami">
@@ -21,7 +18,8 @@ interface Props {
                     the impression of a person who is
                     mentally well doesnt it 
             -->
-            <slot name="pfp" /> <!-- Good enough
+            <slot name="pfp" />
+            <!-- Good enough
                           Time to hang myself -->
             <hgroup>
                 <h1>

@@ -1,15 +1,15 @@
 ---
-import "@fontsource-variable/inter"
-import "../style/index.scss"
-import { siAstro, siGithub, siGithubpages } from "simple-icons"
-import Preloader from "../components/mcmastercarr/Main.astro"
+import "@fontsource-variable/inter";
+import "../style/index.scss";
+import { siAstro, siGithub, siGithubpages } from "simple-icons";
+import Preloader from "../components/mcmastercarr/Main.astro";
 
-const { title, description, meta } = Astro.props
+const { title, description, meta } = Astro.props;
 
 interface Props {
-    title: string
-    description: string
-    meta?: { name: string; content: string }[]
+    title: string;
+    description: string;
+    meta?: { name: string; content: string }[];
 }
 ---
 
@@ -31,7 +31,7 @@ interface Props {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="theme-color" content="#FB405A" />
-        {meta?.map(e => <meta name={e.name} content={e.content} />)}
+        {meta?.map((e) => <meta name={e.name} content={e.content} />)}
     </head>
     <body>
         <style lang="scss">
@@ -148,19 +148,20 @@ interface Props {
         <script>
             document.addEventListener("domready", () => {
                 let btn = document.getElementsByClassName(
-                    "extendPost"
-                )[0] as HTMLInputElement
+                    "extendPost",
+                )[0] as HTMLInputElement;
                 if (btn && btn.disabled !== undefined) {
-                    btn.checked = localStorage.getItem("pagesExtended") == "yes"
+                    btn.checked =
+                        localStorage.getItem("pagesExtended") == "yes";
 
                     btn.addEventListener("change", () => {
                         localStorage.setItem(
                             "pagesExtended",
-                            btn.checked ? "yes" : "no"
-                        )
-                    })
+                            btn.checked ? "yes" : "no",
+                        );
+                    });
                 }
-            })
+            });
         </script>
 
         <Preloader />
