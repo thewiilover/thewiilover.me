@@ -15,7 +15,8 @@
     <div class="spotify-progress">
       <div class="progress-bar">
         <div class="progress-fill"></div>
-        <img id="miku-icon" class="miku-icon" src="../image/miku.png" alt="Miku" style="display: none;" />
+        <!-- Fixed the image path with absolute URL -->
+        <img id="miku-icon" class="miku-icon" src="/image/miku.png" alt="Miku" style="display: none;" />
       </div>
       <div id="time-remaining" class="time-remaining"></div>
     </div>
@@ -56,8 +57,13 @@
       document.getElementById('spotify-song-artist').textContent = data.spotify.artist;
       document.getElementById('spotify-status').textContent = "Now Playing";
       
+      // Debug log to check artist name
+      console.log("Current artist:", data.spotify.artist);
+      
       // Check if artist is Hatsune Miku and show the Miku icon
-      if (data.spotify.artist.includes("Hatsune Miku")) {
+      if (data.spotify.artist.toLowerCase().includes("hatsune miku") || 
+          data.spotify.artist.toLowerCase().includes("初音ミク")) {
+        console.log("Miku detected! Showing icon.");
         mikuIcon.style.display = 'block';
       } else {
         mikuIcon.style.display = 'none';
@@ -111,7 +117,8 @@
       document.getElementById('spotify-status').textContent = "Last Played";
       
       // Check if artist is Hatsune Miku and show the Miku icon
-      if (lastSpotifyData.spotify.artist.includes("Hatsune Miku")) {
+      if (lastSpotifyData.spotify.artist.toLowerCase().includes("hatsune miku") || 
+          lastSpotifyData.spotify.artist.toLowerCase().includes("初音ミク")) {
         mikuIcon.style.display = 'block';
       } else {
         mikuIcon.style.display = 'none';
@@ -218,6 +225,7 @@
   
   .spotify-progress {
     position: relative;
+    margin-top: 15px; /* Added more space for the icon */
   }
   
   .progress-bar {
@@ -228,12 +236,29 @@
     position: relative;
   }
   
+  .progress-fill {
+    height: 100%;
+    background-color: #1DB954; /* Spotify green */
+    width: 0%;
+    border-radius: 3px;
+    transition: width 1s linear;
+  }
+  
   .miku-icon {
     position: absolute;
-    top: -16px; /* Position above the progress bar */
-    right: -8px; /* Position at the end of the progress bar */
+    top: -20px; /* Position higher above the progress bar */
+    right: -12px; /* Position at the end of the progress bar */
     width: 24px;
     height: 24px;
-    z-index: 2;
+    z-index: 10; /* Higher z-index to ensure it's visible */
+    pointer-events: none; /* Prevents the icon from interfering with interactions */
+  }
+  
+  .time-remaining {
+    position: absolute;
+    right: 0;
+    top: 8px;
+    font-size: 0.75rem;
+    color: var(--c-subtext0);
   }
 </style>
