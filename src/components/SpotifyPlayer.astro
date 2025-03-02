@@ -9,6 +9,7 @@
       <div class="spotify-text">
         <div id="spotify-song-title" class="song-title"></div>
         <div id="spotify-song-artist" class="song-artist"></div>
+        <div id="spotify-status" class="status-text"></div>
       </div>
     </div>
     <div class="spotify-progress">
@@ -21,6 +22,10 @@
 </div>
 
 <script is:inline>
+  // Store the last played song
+  let lastSpotifyData = null;
+  let isCurrentlyPlaying = false;
+
   // Function to update the Spotify player UI
   function updateSpotifyPlayer(data) {
     const container = document.querySelector('.spotify-container');
@@ -29,53 +34,80 @@
     // Check if there's a Spotify activity
     const spotifyActivity = data?.activities?.find(activity => activity.name === 'Spotify');
     
-    if (!spotifyActivity || !data?.spotify) {
+    if (spotifyActivity && data?.spotify) {
+      // Currently playing - save this data
+      lastSpotifyData = {
+        activity: spotifyActivity,
+        spotify: data.spotify
+      };
+      isCurrentlyPlaying = true;
+      
+      // Show the player
+      container.style.display = 'block';
+      notPlaying.style.display = 'none';
+      
+      // Update album art
+      document.getElementById('spotify-album-art').src = data.spotify.album_art_url;
+      
+      // Update song info
+      document.getElementById('spotify-song-title').textContent = data.spotify.song;
+      document.getElementById('spotify-song-artist').textContent = data.spotify.artist;
+      document.getElementById('spotify-status').textContent = "Now Playing";
+      
+      // Calculate progress and remaining time
+      if (spotifyActivity.timestamps) {
+        const start = spotifyActivity.timestamps.start;
+        const end = spotifyActivity.timestamps.end;
+        
+        if (start && end) {
+          const duration = end - start;
+          const updateProgress = () => {
+            const now = Date.now();
+            const elapsed = now - start;
+            const remaining = Math.max(0, end - now);
+            
+            // Update progress bar
+            const progressPercent = Math.min(100, (elapsed / duration) * 100);
+            document.querySelector('.progress-fill').style.width = `${progressPercent}%`;
+            
+            // Update remaining time
+            const remainingMinutes = Math.floor(remaining / 60000);
+            const remainingSeconds = Math.floor((remaining % 60000) / 1000);
+            document.getElementById('time-remaining').textContent = 
+              `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            
+            // Continue updating if song is still playing
+            if (now < end && isCurrentlyPlaying) {
+              requestAnimationFrame(updateProgress);
+            }
+          };
+          
+          updateProgress();
+        }
+      }
+    } else if (lastSpotifyData) {
+      // Not currently playing but we have last played data
+      isCurrentlyPlaying = false;
+      
+      // Show the player with last played data
+      container.style.display = 'block';
+      notPlaying.style.display = 'none';
+      
+      // Update album art
+      document.getElementById('spotify-album-art').src = lastSpotifyData.spotify.album_art_url;
+      
+      // Update song info
+      document.getElementById('spotify-song-title').textContent = lastSpotifyData.spotify.song;
+      document.getElementById('spotify-song-artist').textContent = lastSpotifyData.spotify.artist;
+      document.getElementById('spotify-status').textContent = "Last Played";
+      
+      // Show full progress bar for last played
+      document.querySelector('.progress-fill').style.width = '100%';
+      document.getElementById('time-remaining').textContent = '';
+    } else {
+      // No current or last played data
       container.style.display = 'none';
       notPlaying.style.display = 'block';
-      return;
-    }
-    
-    // Show the player
-    container.style.display = 'block';
-    notPlaying.style.display = 'none';
-    
-    // Update album art
-    document.getElementById('spotify-album-art').src = data.spotify.album_art_url;
-    
-    // Update song info
-    document.getElementById('spotify-song-title').textContent = data.spotify.song;
-    document.getElementById('spotify-song-artist').textContent = data.spotify.artist;
-    
-    // Calculate progress and remaining time
-    if (spotifyActivity.timestamps) {
-      const start = spotifyActivity.timestamps.start;
-      const end = spotifyActivity.timestamps.end;
-      
-      if (start && end) {
-        const duration = end - start;
-        const updateProgress = () => {
-          const now = Date.now();
-          const elapsed = now - start;
-          const remaining = Math.max(0, end - now);
-          
-          // Update progress bar
-          const progressPercent = Math.min(100, (elapsed / duration) * 100);
-          document.querySelector('.progress-fill').style.width = `${progressPercent}%`;
-          
-          // Update remaining time
-          const remainingMinutes = Math.floor(remaining / 60000);
-          const remainingSeconds = Math.floor((remaining % 60000) / 1000);
-          document.getElementById('time-remaining').textContent = 
-            `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-          
-          // Continue updating if song is still playing
-          if (now < end) {
-            requestAnimationFrame(updateProgress);
-          }
-        };
-        
-        updateProgress();
-      }
     }
   }
 
@@ -126,8 +158,27 @@
     };
   }
   
+  // Try to fetch last played data from localStorage on page load
+  const storedLastPlayed = localStorage.getItem('lastSpotifyData');
+  if (storedLastPlayed) {
+    try {
+      lastSpotifyData = JSON.parse(storedLastPlayed);
+      // Show last played song immediately while waiting for WebSocket connection
+      updateSpotifyPlayer({});
+    } catch (e) {
+      console.error("Error loading stored Spotify data", e);
+    }
+  }
+  
   // Initialize connection to Lanyard
   connectToLanyard();
+  
+  // Store last played data when leaving the page
+  window.addEventListener('beforeunload', () => {
+    if (lastSpotifyData) {
+      localStorage.setItem('lastSpotifyData', JSON.stringify(lastSpotifyData));
+    }
+  });
   
   // Also listen for updates from OrnamentLayer if available
   document.addEventListener('spotify-update', (event) => {
@@ -136,3 +187,11 @@
     }
   });
 </script>
+
+<style>
+  .status-text {
+    font-size: 0.8rem;
+    color: var(--c-subtext0);
+    margin-top: 2px;
+  }
+</style>
