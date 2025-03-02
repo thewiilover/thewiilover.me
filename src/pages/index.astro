@@ -18,6 +18,7 @@ import {
 } from "simple-icons";
 import IconList from "../components/IconList.astro";
 import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
+import SpotifyPlayer from "../components/SpotifyPlayer.astro";
 ---
 
 <Page
@@ -101,6 +102,10 @@ import OrnamentLayer from "../components/lanyard/OrnamentLayer.astro";
 
         <Fragment slot="description">
             he; absolutely terrible developer
+        </Fragment>
+        
+        <Fragment slot="spotify">
+            <SpotifyPlayer />
         </Fragment>
     </PersonHeader>
 

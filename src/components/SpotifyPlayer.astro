@@ -1,0 +1,82 @@
+---
+---
+
+<div class="spotify-player">
+  <div class="spotify-not-playing">Not playing anything on Spotify</div>
+  <div class="spotify-container" style="display: none;">
+    <div class="spotify-info">
+      <img id="album-art" src="" alt="Album Art" width="64" height="64" />
+      <div class="spotify-text">
+        <div id="song-title" class="song-title"></div>
+        <div id="song-artist" class="song-artist"></div>
+      </div>
+    </div>
+    <div class="spotify-progress">
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div id="time-remaining" class="time-remaining"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener('spotify-update', (event) => {
+    const spotifyData = event.detail;
+    const container = document.querySelector('.spotify-container');
+    const notPlaying = document.querySelector('.spotify-not-playing');
+    
+    if (!spotifyData) {
+      container.style.display = 'none';
+      notPlaying.style.display = 'block';
+      return;
+    }
+    
+    // Show the player
+    container.style.display = 'block';
+    notPlaying.style.display = 'none';
+    
+    // Update album art
+    document.getElementById('album-art').src = spotifyData.album_art_url;
+    
+    // Update song info
+    document.getElementById('song-title').textContent = spotifyData.song;
+    document.getElementById('song-artist').textContent = spotifyData.artist;
+    
+    // Calculate progress and remaining time
+    if (spotifyData.timestamps) {
+      const start = spotifyData.timestamps.start;
+      const end = spotifyData.timestamps.end;
+      
+      if (start && end) {
+        const duration = end - start;
+        const updateProgress = () => {
+          const now = Date.now();
+          const elapsed = now - start;
+          const remaining = Math.max(0, end - now);
+          
+          // Update progress bar
+          const progressPercent = Math.min(100, (elapsed / duration) * 100);
+          document.querySelector('.progress-fill').style.width = `${progressPercent}%`;
+          
+          // Update remaining time
+          const remainingMinutes = Math.floor(remaining / 60000);
+          const remainingSeconds = Math.floor((remaining % 60000) / 1000);
+          document.getElementById('time-remaining').textContent = 
+            `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+          
+          // Continue updating if song is still playing
+          if (now < end) {
+            requestAnimationFrame(updateProgress);
+          }
+        };
+        
+        updateProgress();
+      }
+    }
+  });
+  
+  // Initially check if there's already Spotify data
+  const spotifyUpdateEvent = new CustomEvent('spotify-check');
+  document.dispatchEvent(spotifyUpdateEvent);
+</script>

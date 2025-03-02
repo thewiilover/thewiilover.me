@@ -400,3 +400,87 @@ svg { fill: currentColor }
     height: 100%;
     max-width: calc(calc(16 / 9) * 100vh);
 }
+
+// Spotify Player Styling
+.spotify-player {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--c-mantle);
+  max-width: 100%;
+}
+
+.spotify-not-playing {
+  text-align: center;
+  color: var(--c-subtext0);
+  padding: 1rem;
+}
+
+.spotify-container {
+  width: 100%;
+}
+
+.spotify-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#album-art {
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.spotify-text {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.song-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist {
+  font-size: 0.9rem;
+  color: var(--c-subtext1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotify-progress {
+  position: relative;
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: var(--c-surface0);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #1DB954; /* Spotify green */
+  width: 0%;
+  transition: width 1s linear;
+}
+
+.time-remaining {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  font-size: 0.75rem;
+  color: var(--c-subtext0);
+}
+
+/* PersonHeader styles */
+.spotify-section {
+    margin-top: 1.5rem;
+    width: 100%;
+}
