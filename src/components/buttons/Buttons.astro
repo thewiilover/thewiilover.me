@@ -27,8 +27,8 @@ export interface Metadata {
 }
 
 export type ImportedImage =
-    | (ImageMetadata & Metadata)
-    | ({ directUrl: string } & Metadata);
+    (ImageMetadata & Metadata)
+    ({ directUrl: string } & Metadata);
 
 const images_scopeDefaultsUnapplied = Object.entries(
     groupBy(
