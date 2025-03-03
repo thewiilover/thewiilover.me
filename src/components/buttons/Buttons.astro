@@ -57,7 +57,7 @@ const images_scopeDefaultsUnapplied = Object.entries(
 const images_scopeDefaults = Object.fromEntries(
     images_scopeDefaultsUnapplied
         .filter((e) => e.basename == "__scope__")
-        .map((e) => [e.group, e]),
+        .map((e) => [e.group, e])
 );
 
 const images = images_scopeDefaultsUnapplied
