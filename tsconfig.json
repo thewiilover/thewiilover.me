@@ -2,5 +2,10 @@
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "strictNullChecks": true
-  }
+  },
+  "exclude": [
+    "src/components/buttons/BtnFx.astro",
+    "src/components/buttons/Button.astro",
+    "src/components/buttons/Buttons.astro"
+  ]
 }
